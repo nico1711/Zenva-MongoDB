@@ -23,6 +23,46 @@ router.get('/', (req, res, next) => {
 
 })
 
+
+router.get('/add', (req, res, next) => {
+	const details = req.query
+
+	Country.create(details)
+	.then(country => {
+		res.json({
+			confirmation: 'success',
+			data: country
+		})
+	})
+	.catch(err => {
+		res.json({
+			confirmation: 'fail',
+			message: err.message
+		})
+	})
+})
+
+router.get('/update/:id', (req, res, next) => {
+	const updatedDetails = req.query
+	const countryId = req.params.id
+
+	// The {new: true} makes it to return the country AFTER updated
+	Country.findByIdAndUpdate(countryId, updatedDetails, {new:true})
+	.then(country => {
+		res.json({
+			confirmation: 'success',
+			data: country
+		})
+	})
+	.catch(err => {
+		res.json({
+			confirmation: 'fail',
+			message: err.message
+		})
+	})
+
+})
+
 // Gets the Id and looks for an specific item
 router.get('/:id', (req, res, next) => {
 
